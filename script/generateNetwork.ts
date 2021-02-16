@@ -1,10 +1,16 @@
 import * as path from "path";
 import fs from 'fs';
-import { Converter } from 'showdown';
+import { Converter, Metadata } from 'showdown';
 
 const dir = {
   input: path.join(__dirname, '..', '_zettels'),
   output: path.join(__dirname, '..', 'dist'),
+}
+
+const removeSquareBrackets = (s: string) => s.replace(/[\[\]']+/g, '')
+const getId = (f: string) => {
+  const parsedId = parseInt(f.split(' ')[0])
+  return isNaN(parsedId) ? null : parsedId
 };
 
 (async () => {
@@ -12,11 +18,6 @@ const dir = {
 
   const mdConverter = new Converter({ metadata: true })
   const files = await fs.promises.readdir(dir.input)
-
-  const getId = (f: string) => {
-    const parsedId = parseInt(f.split(' ')[0])
-    return isNaN(parsedId) ? null : parsedId
-  }
 
   const nodes = await Promise.all(files.map(async fileName => {
     const fileContent = await fs.promises.readFile(
@@ -27,11 +28,15 @@ const dir = {
     return {
       id: getId(fileName),
       html: mdConverter.makeHtml(fileContent),
-      metaData: mdConverter.getMetadata(),
+      metaData: Object.fromEntries(
+        Object.entries(mdConverter.getMetadata(false) as Metadata).map(([key, entry]) => [
+          key,
+          removeSquareBrackets(entry).split(',').map(s => s.trim())
+        ])
+      ),
       linksTo: (() => {
         const matches = fileContent.match(/\[\[(.*?)\]\]/g)
-        if (!matches) return []
-        return matches.map(match => match.replace(/[\[\]']+/g, '')).map(getId)
+        return matches ? matches.map(removeSquareBrackets).map(getId) : []
       })(),
       label: (() => {
         if (getId(fileName) === null) return fileName.split('.')[0]
