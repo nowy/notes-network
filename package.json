@@ -1,13 +1,31 @@
 {
-  "name": "notes-network",
+  "name": "@nowy/notes-network",
+  "description": "An app to generate a data visualisation of my zettelkasten notes.",
   "version": "1.0.0",
+  "author": "Noel Varanda",
+  "license": "ISC",
+  "main": "dist/index.js",
+  "files": [
+    "dist/index.js"
+  ],
   "scripts": {
     "generate:network": "ts-node --project script/tsconfig.json script/generateNetwork.ts",
     "build": "npm run generate:network & cross-env NODE_ENV=production parcel build src/index.html --public-url .",
     "serve": "parcel serve src/index.html"
   },
-  "author": "Noel Varanda",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nowy/notes-network.git"
+  },
+  "keywords": [
+    "zettelkasten",
+    "notes",
+    "network"
+  ],
+  "bugs": {
+    "url": "https://github.com/nowy/notes-network/issues"
+  },
+  "homepage": "https://github.com/nowy/notes-network#readme",
   "devDependencies": {
     "showdown": "^1.9.1",
     "@types/node": "^14.14.28",
