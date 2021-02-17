@@ -43,15 +43,5 @@ export const createNetwork = async (options: {
   },
   physics: {
     barnesHut: { gravitationalConstant: -4000 }
-    // forceAtlas2Based: {
-    //   gravitationalConstant: -26,
-    //   centralGravity: 0.005,
-    //   springLength: 230,
-    //   springConstant: 0.18,
-    // },
-    // maxVelocity: 146,
-    // solver: "forceAtlas2Based",
-    // timestep: 0.35,
-    // stabilization: { iterations: 150 },
   },
 })

@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "generate:network": "ts-node --project script/tsconfig.json script/generateNetwork.ts",
-    "start": "parcel serve src/index.html",
     "build": "npm run generate:network & cross-env NODE_ENV=production parcel build src/index.html --public-url .",
-    "watch": "parcel watch src/index.html"
+    "serve": "parcel serve src/index.html"
   },
   "author": "Noel Varanda",
   "license": "ISC",

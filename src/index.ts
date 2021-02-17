@@ -12,7 +12,7 @@ interface NotesNetwork {
 const isSystemTag = (tag: string) => ['literature-note', 'index-card'].includes(tag);
 
 (async () => {
-  const zettels = await require('../dist/zettels.json') as NotesNetwork
+  const zettels = require('../dist/zettels.json') as NotesNetwork
   const container = document.getElementById('network')
 
   if (!container) return
@@ -24,12 +24,15 @@ const isSystemTag = (tag: string) => ['literature-note', 'index-card'].includes(
     group: node.metaData.tags?.filter(tag => !isSystemTag(tag))[0] ?? undefined
   }))
 
-  const network = await createNetwork({ container, edges, nodes: networkNodes })
+  const network = await createNetwork({
+    container,
+    edges,
+    nodes: networkNodes
+  })
 
   network.on('selectNode', ({ nodes, edges }) => {
     const node = networkNodes.find(({ id }) => id === nodes[0])
     if (!node) return
     console.warn({ node, edges })
-  });
+  })
 })()
- 
