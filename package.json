@@ -1,7 +1,7 @@
 {
   "name": "notesnetwork",
   "description": "An app to generate a data visualisation of my zettelkasten notes.",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "author": "Noel Varanda",
   "license": "ISC",
   "main": "dist/index.js",
@@ -28,11 +28,16 @@
   },
   "homepage": "https://github.com/nowy/notes-network#readme",
   "devDependencies": {
+    "@babel/core": "^7.12.17",
+    "@babel/preset-typescript": "^7.12.17",
+    "@rollup/plugin-commonjs": "^17.1.0",
     "@rollup/plugin-node-resolve": "^11.2.0",
     "@rollup/plugin-typescript": "^8.2.0",
     "@types/node": "^14.14.28",
     "@types/showdown": "^1.9.3",
+    "babel-preset-es2015": "^6.24.1",
     "rollup": "^2.39.0",
+    "rollup-plugin-babel": "^4.4.0",
     "showdown": "^1.9.1",
     "tslib": "^2.1.0",
     "typescript": "^4.1.5"
