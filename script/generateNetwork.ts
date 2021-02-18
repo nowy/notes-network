@@ -2,9 +2,13 @@ import * as path from "path";
 import fs from 'fs';
 import { Converter, Metadata } from 'showdown';
 
-const dir = {
-  input: path.join(__dirname, '..', '_zettels'),
-  output: path.join(__dirname, '..', 'dist'),
+const input = {
+  dir: path.join(__dirname, '..', '_notes'),
+}
+
+const output = {
+  dir: path.join(__dirname, '..', 'dist'),
+  file: 'notes.json',
 }
 
 const removeSquareBrackets = (s: string) => s.replace(/[\[\]']+/g, '')
@@ -14,14 +18,14 @@ const getId = (f: string) => {
 };
 
 (async () => {
-  await fs.promises.mkdir(dir.output, { recursive: true })
+  await fs.promises.mkdir(output.dir, { recursive: true })
 
   const mdConverter = new Converter({ metadata: true })
-  const files = await fs.promises.readdir(dir.input)
+  const files = await fs.promises.readdir(input.dir)
 
   const nodes = await Promise.all(files.map(async fileName => {
     const fileContent = await fs.promises.readFile(
-      path.join(dir.input, fileName),
+      path.join(input.dir, fileName),
       { encoding: 'utf-8' }
     )
 
@@ -47,7 +51,7 @@ const getId = (f: string) => {
   }))
 
   await fs.promises.writeFile(
-    path.join(dir.output, 'zettels.json'),
+    path.join(output.dir, output.file),
     JSON.stringify({
       nodes,
       edges: nodes.flatMap(({ id, linksTo }) => (
@@ -56,5 +60,5 @@ const getId = (f: string) => {
     })
   )
 
-  console.log(`✅ Post written to file "zettels.json"`)
+  console.log(`✅ Post written to file "${output.file}"`)
 })()

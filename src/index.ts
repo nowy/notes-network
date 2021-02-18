@@ -12,13 +12,13 @@ interface NotesNetwork {
 const isSystemTag = (tag: string) => ['literature-note', 'index-card'].includes(tag);
 
 (async () => {
-  const zettels = require('../dist/zettels.json') as NotesNetwork
+  const notes = require('../dist/notes.json') as NotesNetwork
   const container = document.getElementById('network')
 
   if (!container) return
 
-  const edges = zettels.edges.map(({ source, target }) => ({ from: source, to: target }))
-  const networkNodes = zettels.nodes.map(node => ({
+  const edges = notes.edges.map(({ source, target }) => ({ from: source, to: target }))
+  const networkNodes = notes.nodes.map(node => ({
     ...node,
     value: Math.max(1, edges.filter(edge => edge.to === node.id || edge.from === node.id).length),
     group: node.metaData.tags?.filter(tag => !isSystemTag(tag))[0] ?? undefined
