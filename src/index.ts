@@ -11,12 +11,11 @@ interface NotesNetwork {
 
 const isSystemTag = (tag: string) => ['literature-note', 'index-card'].includes(tag);
 
-(async () => {
-  const notes = require('../dist/notes.json') as NotesNetwork
-  const container = document.getElementById('network')
-
-  if (!container) return
-
+export const createNotesNetwork = async (options: {
+  notes: NotesNetwork,
+  container: HTMLElement
+}) => {
+  const { notes, container } = options
   const edges = notes.edges.map(({ source, target }) => ({ from: source, to: target }))
   const networkNodes = notes.nodes.map(node => ({
     ...node,
@@ -24,15 +23,9 @@ const isSystemTag = (tag: string) => ['literature-note', 'index-card'].includes(
     group: node.metaData.tags?.filter(tag => !isSystemTag(tag))[0] ?? undefined
   }))
 
-  const network = await createNetwork({
+  return createNetwork({
     container,
     edges,
     nodes: networkNodes
   })
-
-  network.on('selectNode', ({ nodes, edges }) => {
-    const node = networkNodes.find(({ id }) => id === nodes[0])
-    if (!node) return
-    console.warn({ node, edges })
-  })
-})()
+}
